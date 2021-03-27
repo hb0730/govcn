@@ -20,10 +20,9 @@ func main() {
 		govs := getGovList("http://www.5566.net/" + gov)
 		govAll = append(govAll, govs...)
 	}
-	fmt.Println(govAll)
-	fmt.Println(len(govAll))
 }
 
+//首页
 func home() []string {
 	bodyStr := tryGetBody("http://www.5566.net/gov-.htm", 3)
 	compile := regexp.MustCompile(`<a class="p12" href="(.*?)" target="_self">.*?</a>`)
@@ -44,19 +43,22 @@ func getGovList(url string) []string {
 		url = getLimiterUrl(bodyStr)
 		return getGovList(url)
 	} else {
-		compile := regexp.MustCompile(`,.*.gov.cn`)
+		compile := regexp.MustCompile(`,"(.*.gov.cn/)"`)
 		allString := compile.FindAllStringSubmatch(bodyStr, -1)
 		var govStr string
 		for _, match := range allString {
 			govStr = match[0]
 		}
 		if len(govStr) != 0 {
-
-			return strings.Split(govStr, ",")
+			govStr = strings.Replace(govStr, "\"", "", -1)[1:]
+			results := strings.Split(govStr, ",")
+			return results
 		}
 		return nil
 	}
 }
+
+//获取限流后的url
 func getLimiterUrl(body string) string {
 	urlReg := `<HTML><HEAD><script>window.location.href="(.*?)";</script></HEAD><BODY>`
 	limiterCompile := regexp.MustCompile(urlReg)
@@ -64,6 +66,23 @@ func getLimiterUrl(body string) string {
 	return limiterUrl[0][1]
 }
 
+//获取govcn title
+func getTitle(url string) map[string]string {
+	if url == "" {
+		return nil
+	}
+	url = "http://" + url
+	body := tryGetBody(url, 3)
+	titleReg := `<title>(.*?)</title>`
+	titleCompile := regexp.MustCompile(titleReg)
+	title := titleCompile.FindAllStringSubmatch(body, -1)
+	if len(title) <= 0 {
+		return nil
+	}
+	return map[string]string{"url": title[0][1]}
+}
+
+//尝试获取body
 func tryGetBody(url string, num int) string {
 	response := getBody(url)
 	if response.StatusCode != 200 && num > 0 {
