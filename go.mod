@@ -1,3 +1,5 @@
-module govcn
-require github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
+module github.com/hb0730/govcn
+
 go 1.15
+
+require github.com/projectdiscovery/subfinder/v2 v2.4.8
