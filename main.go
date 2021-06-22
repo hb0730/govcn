@@ -23,7 +23,7 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		write(
 			response,
-			result(500, fmt.Sprintln("find subdomain error, error message:[%s]", err.Error()), nil),
+			result(500, fmt.Sprintf("find subdomain error, error message:[%s]", err.Error()), nil),
 		)
 		return
 	}
