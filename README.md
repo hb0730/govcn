@@ -10,3 +10,7 @@
 # 免责声明
 
 数据来源于第三方网站,仅供学习交流使用，请勿用于商业用途。
+
+# 依赖
+
+* [projectdiscovery/subfinder](https://github.com/projectdiscovery/subfinder)
