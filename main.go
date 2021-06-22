@@ -1,47 +1,56 @@
 package main
 
 import (
-	"bytes"
-	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/projectdiscovery/subfinder/v2/pkg/passive"
-	"github.com/projectdiscovery/subfinder/v2/pkg/resolve"
-	"github.com/projectdiscovery/subfinder/v2/pkg/runner"
-	"io"
-	"io/ioutil"
-	"log"
-	"os"
+	"net/http"
 )
 
 func main() {
-	resolve.DefaultResolvers = append(resolve.DefaultResolvers, "114.114.114.114", "114.114.115.115")
-	config := runner.ConfigFile{
-		Resolvers:  resolve.DefaultResolvers,
-		Sources:    passive.DefaultSources,
-		AllSources: passive.DefaultAllSources,
-		Recursive:  passive.DefaultRecursiveSources,
-	}
-	runnerInstance, err := runner.NewRunner(&runner.Options{
-		Threads:            10,
-		Timeout:            30,
-		MaxEnumerationTime: 10,
-		YAMLConfig:         config,
-	})
-	if err != nil {
-		log.Fatal(err)
+	http.Handle("/", http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		Handler(response, request)
+	}))
+	err := http.ListenAndServe(":80", nil)
+	panic(err)
+}
+func Handler(response http.ResponseWriter, request *http.Request) {
+	domain := request.URL.Query().Get("domain")
+	if domain == "" {
+		write(response, result(404, "domain is null", nil))
 		return
 	}
-	buf := bytes.Buffer{}
-	err = runnerInstance.EnumerateSingleDomain(context.Background(), "gov.cn", []io.Writer{&buf})
+	bt, err := find(domain)
 	if err != nil {
-		log.Fatal(err)
+		write(
+			response,
+			result(500, fmt.Sprintln("find subdomain error, error message:[%s]", err.Error()), nil),
+		)
+		return
 	}
+	write(
+		response,
+		result(200, "success", string(bt)),
+	)
+	return
+}
 
-	data, err := ioutil.ReadAll(&buf)
-	if err != nil {
-		log.Fatal(err)
+type Result struct {
+	Code    int
+	Message string
+	Data    interface{}
+}
+
+func result(code int, message string, data interface{}) (rt []byte) {
+	r := Result{
+		Code:    code,
+		Message: message,
+		Data:    data,
 	}
-	ioutil.WriteFile("./subdomain.txt", []byte(data), os.ModePerm)
+	rt, _ = json.Marshal(&r)
+	return
+}
 
-	fmt.Printf("%s", data)
+func write(w http.ResponseWriter, rt []byte) {
+	_, _ = w.Write(rt)
+	w.WriteHeader(200)
 }
