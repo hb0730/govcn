@@ -41,7 +41,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	ioutil.WriteFile("./govcn.txt", []byte(data), os.ModePerm)
+	ioutil.WriteFile("./subdomain.txt", []byte(data), os.ModePerm)
 
 	fmt.Printf("%s", data)
 }

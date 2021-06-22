@@ -1,4 +1,4 @@
-module github.com/hb0730/govcn
+module github.com/hb0730/subdomain
 
 go 1.15
 
