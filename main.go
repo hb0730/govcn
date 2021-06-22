@@ -11,7 +11,9 @@ func main() {
 		Handler(response, request)
 	}))
 	err := http.ListenAndServe(":80", nil)
-	panic(err)
+	if err != nil {
+		panic(err)
+	}
 }
 func Handler(response http.ResponseWriter, request *http.Request) {
 	domain := request.URL.Query().Get("domain")
