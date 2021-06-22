@@ -14,3 +14,6 @@
 # 依赖
 
 * [projectdiscovery/subfinder](https://github.com/projectdiscovery/subfinder)
+
+# 子域文章
+ * [渗透测试向导—子域名枚举技术](https://zhuanlan.zhihu.com/p/31160156)
