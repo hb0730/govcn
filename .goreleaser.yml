@@ -15,6 +15,19 @@ builds:
       - 386
       - arm
       - arm64
+dockers:
+  - goos: linux
+    goarch: amd64
+    goarm: ''
+    ids:
+      - subdomain
+    image_templates:
+      - "hb0730/subdomain:latest"
+      - "hb0730/subdomain:{{.Tag}}"
+    skip_push: false
+    dockerfile: Dockerfile
+    use_buildx: true
+
 archives:
   - id: tar
     format: tar.gz
