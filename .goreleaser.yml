@@ -4,7 +4,7 @@ before:
   hooks:
     - go mod tidy
 builds:
-  - main: ./mian.go
+  - main: .
     binary: subdomain
     goos:
       - linux
