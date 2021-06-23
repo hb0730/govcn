@@ -17,3 +17,15 @@
 
 # 子域文章
  * [渗透测试向导—子域名枚举技术](https://zhuanlan.zhihu.com/p/31160156)
+
+# Docker
+```yaml
+version: '3.1'
+services:
+  subdomain:
+    image: hb0730/subdoamin
+    restart: always
+    container_name: subdomain
+    ports:
+      - 80:80
+```
