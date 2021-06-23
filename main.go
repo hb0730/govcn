@@ -2,15 +2,21 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"net/http"
 )
 
+var (
+	serverAddr = flag.String("server", ":80", "Server addr (ip:port)")
+)
+
 func main() {
+	flag.Parse()
 	http.Handle("/", http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 		Handler(response, request)
 	}))
-	err := http.ListenAndServe(":80", nil)
+	err := http.ListenAndServe(*serverAddr, nil)
 	if err != nil {
 		panic(err)
 	}
