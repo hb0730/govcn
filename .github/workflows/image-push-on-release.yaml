@@ -1,0 +1,13 @@
+name: Publish to Dockerhub on creation of a new release
+on:
+  release:
+    types: [ published ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tag
+        id: tag
+        run: |
+          version=${{github.ref}}
+          echo version
