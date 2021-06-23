@@ -1,4 +1,4 @@
 FROM golang:1.16-alpine
 WORKDIR /app
 COPY subdomain .
-ENTRYPOINT ["subdomain"]
+ENTRYPOINT ["/app/subdomain"]
