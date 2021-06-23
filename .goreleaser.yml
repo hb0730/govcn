@@ -25,6 +25,8 @@ dockers:
     skip_push: false
     dockerfile: Dockerfile
     use_buildx: true
+    extra_files:
+      - dist/subdomain_darwin_arm64/subdomain
 
 archives:
   - id: tar
