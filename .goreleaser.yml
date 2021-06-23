@@ -5,6 +5,8 @@ before:
     - go mod tidy
 builds:
   - main: .
+    env:
+      - CGO_ENABLED=0
     binary: subdomain
     goos:
       - linux
@@ -27,8 +29,6 @@ dockers:
     skip_push: false
     dockerfile: Dockerfile
     use_buildx: true
-    extra_files:
-      - dist/subdomain_linux_amd64
 
 archives:
   - id: tar
