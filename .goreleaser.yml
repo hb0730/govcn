@@ -11,8 +11,8 @@ builds:
       - windows
       - darwin
     goarch:
-      - amd64
       - 386
+      - amd64
       - arm
       - arm64
 dockers:
