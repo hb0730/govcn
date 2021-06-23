@@ -27,6 +27,8 @@ dockers:
     skip_push: false
     dockerfile: Dockerfile
     use_buildx: true
+    extra_files:
+      - dist/subdomain_linux_amd64
 
 archives:
   - id: tar
