@@ -43,9 +43,9 @@ func Handler(response http.ResponseWriter, request *http.Request) {
 }
 
 type Result struct {
-	Code    int
-	Message string
-	Data    interface{}
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 func result(code int, message string, data interface{}) (rt []byte) {
